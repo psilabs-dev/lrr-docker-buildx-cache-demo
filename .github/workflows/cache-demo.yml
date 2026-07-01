@@ -2,7 +2,7 @@ name: buildx-cache-demo
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   pull_request:
 
 jobs:
@@ -27,4 +27,7 @@ jobs:
         with:
           tags: lanraragi:test
           outputs: type=docker
-          cache-from: type=gha,scope=buildkit-linux-amd64
+          cache-from: |
+            type=gha,scope=buildkit-linux-amd64-pr-${{ github.event.number }}
+            type=gha,scope=buildkit-linux-amd64
+          cache-to: type=gha,mode=max,scope=buildkit-linux-amd64-pr-${{ github.event.number }}
